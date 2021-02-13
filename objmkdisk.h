@@ -12,7 +12,7 @@ public:
 
     int size;
     string fit;
-    char unity;
+    string unity;
     string path;
 };
 

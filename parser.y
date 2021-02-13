@@ -51,26 +51,51 @@ class ObjMkdisk *mdisk;
 %token<TEXT> entero;
 %token<TEXT> cadena;
 %token<TEXT> caracter;
+%token<TEXT> ruta;
+%token<TEXT> fit;
+%token<TEXT> unity;
 
 // NO TERMINALES
-%type<mdisk> COMMANDMKDISK; // lista de instrucciones
+%type<mdisk> COMMAND_MKDISK;
 %start INICIO
 %%
 
 INICIO : LEXPA { }
 ;
 
-LEXPA:  pmkdisk COMMANDMKDISK{
+LEXPA:  pmkdisk COMMAND_MKDISK {
     $2->executeCommand($2); // ejecuto el metodo "mostrardatos" del objeto retornado en COMANDOMKDISK
 }
 ;
 
-COMMANDMKDISK:
-menos psize igual entero {
-    int size=atoi($4);
-    ObjMkdisk *disk = new ObjMkdisk();
-    disk->size = size;
-    $$ = disk;
-}
+COMMAND_MKDISK: menos psize igual entero {
 
+                int size = atoi($4);
+                ObjMkdisk *disk = new ObjMkdisk();
+                disk->size = size;
+                $$ = disk;
+            }
+               | COMMAND_MKDISK menos pfit igual fit {
+
+                string var_fit = $5;
+                $1->fit = var_fit;
+                $$ = $1;
+            }
+               | COMMAND_MKDISK menos punit igual unity {
+
+                string var_unity = $5;
+                $1->unity = var_unity;
+                $$ = $1;
+            }
+               | COMMAND_MKDISK menos ppath igual ruta {
+
+                string var_path = $5;
+                $1->path = var_path;
+                $$ = $1;
+            }
+               | %empty {
+
+                $$ = nullptr;
+            }
+;
 

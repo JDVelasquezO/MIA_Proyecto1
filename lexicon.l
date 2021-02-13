@@ -21,10 +21,13 @@
 
 entero [0-9]+
 letra [a-zA-ZÑñáéíóúÁÉÍÓÚ]+
+fit [B|F|W]F
+unity [k]|[m]|[K]|[M]
 
-identificador {letra}({letra}|{entero}|"_")*
+identificador {letra}({letra}|{entero}|"_"|".")*
 caracter "\'"("\\")?({letra}|{entero})"\'"
 cadena [\"][^\"\n]*[\"\n]
+ruta (\/{identificador})+
 
 %x COM
 %%
@@ -50,6 +53,9 @@ cadena [\"][^\"\n]*[\"\n]
 {entero} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return entero;}
 {cadena} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return cadena;}
 {caracter} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return caracter;}
+{fit} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return fit;}
+{unity} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return unity;}
+{ruta} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return ruta;}
 "=" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return igual;}
 "-" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
 

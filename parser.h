@@ -69,7 +69,10 @@ extern int yydebug;
     igual = 275,
     entero = 276,
     cadena = 277,
-    caracter = 278
+    caracter = 278,
+    ruta = 279,
+    fit = 280,
+    unity = 281
   };
 #endif
 
@@ -83,7 +86,7 @@ union YYSTYPE
 char TEXT[256];
 class ObjMkdisk *mdisk;
 
-#line 87 "parser.h"
+#line 90 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
