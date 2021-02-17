@@ -93,9 +93,14 @@ COMMAND_MKDISK: menos psize igual entero {
                 $1->path = var_path;
                 $$ = $1;
             }
-               | %empty {
 
-                $$ = nullptr;
-            }
+               | COMMAND_MKDISK menos ppath igual cadena {
+
+                string var_path = $5;
+                var_path.erase(0, 1);
+                var_path.erase(var_path.size()-1, 1);
+                $1->path = var_path;
+                $$ = $1;
+           }
 ;
 

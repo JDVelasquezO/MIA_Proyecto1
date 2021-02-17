@@ -13,7 +13,7 @@ using namespace std;
 
 ObjMkdisk::ObjMkdisk()
 {
-    unity = "k";
+    unity = "m";
     path = "/";
     fit = "FF";
 }
@@ -59,6 +59,15 @@ bool makePath(const std::string& path) {
 
 string createFolder(ObjMkdisk *disk) {
     string route = disk->path.c_str();
+
+    //cout << route << endl;
+    //cout << route.length() << endl;
+    if (route[0] == '\"') {
+        route.erase(0, 1);
+        route.erase(route.length()-1, 1);
+    }
+    //cout << route << endl;
+
     string delimiter = "/";
 
     size_t pos = 0;
@@ -68,7 +77,7 @@ string createFolder(ObjMkdisk *disk) {
         token = route.substr(0, pos);
         // cout << token << std::endl;
         newRoute += token + "/";
-        // cout << newRoute << endl;
+        //cout << newRoute << endl;
         route.erase(0, pos + delimiter.length());
     }
 
@@ -79,19 +88,29 @@ void ObjMkdisk::assignUnity(ObjMkdisk *disk){
 
     FILE *file;
     char buffer[1024];
-
     string newRoute = createFolder(disk);
     makePath(newRoute);
 
+    /*if (disk->path.c_str()[0] == '\"') {
+        char *ptr;
+        ptr = (char*)( &disk->path.c_str() );
+        *ptr[0] = "";
+    }*/
+
     file = fopen(disk->path.c_str(), "wb");
+
+    if (file == NULL) {
+        exit(1);
+    }
+
     if (disk->unity == "K" || disk->unity == "k") {
         // newMbr.mbr_tamano = (disk->size)*1024;
-        for (int i = 0; i < 1024; i++) {
-            buffer[i] = '\0';
+        for (int i = 0; i < 1024; i++) { // Es hasta 1024 porque es 1KB
+            buffer[i] = '\0'; // Se llena la variable con el caracter 0. 1 char = 1 byte
         }
 
-        for (int i = 0; i < disk->size; i++) {
-            fwrite(&buffer, 1024, 1, file);
+        for (int i = 0; i < disk->size; i++) { // Desde 0 hasta el el tamaño
+            fwrite(&buffer, 1024, 1, file); // Escribe i veces el kilobyte
         }
 
         fclose(file);
@@ -103,7 +122,7 @@ void ObjMkdisk::assignUnity(ObjMkdisk *disk){
             buffer[i] = '\0';
         }
 
-        for (int i = 0; i < (disk->size * 1024); i++) {
+        for (int i = 0; i < (disk->size * 1024); i++) { // Se multiplica *1024 porque 1MB = 1024KB
             fwrite(&buffer, 1024, 1, file);
         }
 
@@ -120,8 +139,6 @@ void ObjMkdisk::executeCommand(ObjMkdisk *disk) {
     cout << "El ajuste es: " << disk->fit << endl;
 
     // mbr newMbr;
-
-
     assignUnity(disk);
 }
 

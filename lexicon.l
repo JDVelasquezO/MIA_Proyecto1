@@ -27,7 +27,7 @@ unity [k]|[m]|[K]|[M]
 identificador {letra}({letra}|{entero}|"_"|".")*
 caracter "\'"("\\")?({letra}|{entero})"\'"
 cadena [\"][^\"\n]*[\"\n]
-ruta (\/{identificador})+
+ruta (\/{identificador})+(".dk")
 
 %x COM
 %%
