@@ -80,13 +80,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 25 "parser.y"
+#line 27 "parser.y"
 
-//se especifican los tipo de valores para los no terminales y lo terminales
-char TEXT[256];
-class ObjMkdisk *mdisk;
+    //se especifican los tipo de valores para los no terminales y lo terminales
+    char TEXT[256];
+    class ObjMkdisk *mkdisk;
+    class objrmdisk *rmdisk;
 
-#line 90 "parser.h"
+#line 91 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

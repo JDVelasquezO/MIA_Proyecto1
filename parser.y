@@ -5,15 +5,16 @@
 #include "qdebug.h"
 #include <iostream>
 #include "objmkdisk.h"
+#include "objrmdisk.h"
+
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern int columna; //columna actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo maneja BISON
 
-int yyerror(const char* mens)
-{
-std::cout << mens <<" "<<yytext<< std::endl;
-return 0;
+int yyerror(const char* mens) {
+    std::cout << mens <<" "<<yytext<< std::endl;
+    return 0;
 }
 %}
 
@@ -22,10 +23,12 @@ return 0;
 %output "parser.cpp"
 %define parse.error verbose
 %locations
+
 %union{
-//se especifican los tipo de valores para los no terminales y lo terminales
-char TEXT[256];
-class ObjMkdisk *mdisk;
+    //se especifican los tipo de valores para los no terminales y lo terminales
+    char TEXT[256];
+    class ObjMkdisk *mkdisk;
+    class objrmdisk *rmdisk;
 }
 
 // TERMINALES TIPO TEXT
@@ -56,7 +59,8 @@ class ObjMkdisk *mdisk;
 %token<TEXT> unity;
 
 // NO TERMINALES
-%type<mdisk> COMMAND_MKDISK;
+%type<mkdisk> COMMAND_MKDISK;
+%type<rmdisk> COMMAND_RMDISK;
 %start INICIO
 %%
 
@@ -64,8 +68,11 @@ INICIO : LEXPA { }
 ;
 
 LEXPA:  pmkdisk COMMAND_MKDISK {
-    $2->executeCommand($2); // ejecuto el metodo "mostrardatos" del objeto retornado en COMANDOMKDISK
-}
+            $2->executeCommand($2);
+        }
+      | prmdisk COMMAND_RMDISK {
+            $2->executeCommand($2);
+        }
 ;
 
 COMMAND_MKDISK: menos psize igual entero {
@@ -104,3 +111,19 @@ COMMAND_MKDISK: menos psize igual entero {
            }
 ;
 
+COMMAND_RMDISK: menos ppath igual ruta {
+
+                string var_path = $4;
+                objrmdisk *disk = new objrmdisk();
+                disk->path = var_path;
+                $$ = disk;
+            }
+            | COMMAND_RMDISK menos ppath igual cadena {
+
+                 string var_path = $5;
+                 var_path.erase(0, 1);
+                 var_path.erase(var_path.size()-1, 1);
+                 $1->path = var_path;
+                 $$ = $1;
+            }
+;
