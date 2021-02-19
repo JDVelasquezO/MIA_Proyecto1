@@ -58,6 +58,7 @@ ruta (\/{identificador})+(".dk")
 {ruta} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return ruta;}
 "=" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return igual;}
 "-" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
+"\"" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pcomillas;}
 
 "\n" {linea++; columna=0; anterior=0;}
 [[:blank:]] { columna++; }

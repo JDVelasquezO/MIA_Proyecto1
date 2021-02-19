@@ -72,7 +72,8 @@ extern int yydebug;
     caracter = 278,
     ruta = 279,
     fit = 280,
-    unity = 281
+    unity = 281,
+    pcomillas = 282
   };
 #endif
 
@@ -87,7 +88,7 @@ union YYSTYPE
     class ObjMkdisk *mkdisk;
     class objrmdisk *rmdisk;
 
-#line 91 "parser.h"
+#line 92 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

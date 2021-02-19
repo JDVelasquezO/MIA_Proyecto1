@@ -1,13 +1,13 @@
 %{
+#include "string"
 #include "scanner.h" //se importa el header del analisis sintactico
 #include <QString>
-#include <string>
 #include "qdebug.h"
 #include <iostream>
 #include "objmkdisk.h"
 #include "objrmdisk.h"
-
 using namespace std;
+
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern int columna; //columna actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo maneja BISON
@@ -57,6 +57,7 @@ int yyerror(const char* mens) {
 %token<TEXT> ruta;
 %token<TEXT> fit;
 %token<TEXT> unity;
+%token<TEXT> pcomillas;
 
 // NO TERMINALES
 %type<mkdisk> COMMAND_MKDISK;
@@ -75,33 +76,33 @@ LEXPA:  pmkdisk COMMAND_MKDISK {
         }
 ;
 
-COMMAND_MKDISK: menos psize igual entero {
+COMMAND_MKDISK: menos psize igual entero { // -size = 2000
 
                 int size = atoi($4);
                 ObjMkdisk *disk = new ObjMkdisk();
                 disk->size = size;
                 $$ = disk;
             }
-               | COMMAND_MKDISK menos pfit igual fit {
+               | COMMAND_MKDISK menos pfit igual fit { // -f = BF
 
                 string var_fit = $5;
                 $1->fit = var_fit;
                 $$ = $1;
             }
-               | COMMAND_MKDISK menos punit igual unity {
+               | COMMAND_MKDISK menos punit igual unity { // -u = K
 
                 string var_unity = $5;
                 $1->unity = var_unity;
                 $$ = $1;
             }
-               | COMMAND_MKDISK menos ppath igual ruta {
+               | COMMAND_MKDISK menos ppath igual ruta { // -path = /home/usr/algo.dk
 
                 string var_path = $5;
                 $1->path = var_path;
                 $$ = $1;
             }
 
-               | COMMAND_MKDISK menos ppath igual cadena {
+               | COMMAND_MKDISK menos ppath igual cadena { // -path = "/home/hola a todos/algo.dk"
 
                 string var_path = $5;
                 var_path.erase(0, 1);
@@ -118,12 +119,13 @@ COMMAND_RMDISK: menos ppath igual ruta {
                 disk->path = var_path;
                 $$ = disk;
             }
-            | COMMAND_RMDISK menos ppath igual cadena {
 
-                 string var_path = $5;
-                 var_path.erase(0, 1);
-                 var_path.erase(var_path.size()-1, 1);
-                 $1->path = var_path;
-                 $$ = $1;
+            | COMMAND_RMDISK menos ppath igual pcomillas ruta pcomillas  {
+                string var_path = $5;
+                var_path.erase(0, 1);
+                var_path.erase(var_path.size()-1, 1);
+                $1->path = var_path;
+
+                $$ = $1;
             }
 ;

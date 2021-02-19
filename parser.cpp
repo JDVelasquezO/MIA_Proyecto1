@@ -68,15 +68,15 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
+#include "string"
 #include "scanner.h" //se importa el header del analisis sintactico
 #include <QString>
-#include <string>
 #include "qdebug.h"
 #include <iostream>
 #include "objmkdisk.h"
 #include "objrmdisk.h"
-
 using namespace std;
+
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern int columna; //columna actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo maneja BISON
@@ -157,7 +157,8 @@ extern int yydebug;
     caracter = 278,
     ruta = 279,
     fit = 280,
-    unity = 281
+    unity = 281,
+    pcomillas = 282
   };
 #endif
 
@@ -172,7 +173,7 @@ union YYSTYPE
     class ObjMkdisk *mkdisk;
     class objrmdisk *rmdisk;
 
-#line 176 "parser.cpp"
+#line 177 "parser.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -508,19 +509,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   33
+#define YYLAST   38
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  27
+#define YYNTOKENS  28
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  11
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  31
+#define YYNSTATES  33
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   281
+#define YYMAXUTOK   282
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -560,15 +561,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26
+      25,    26,    27
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    67,    67,    70,    73,    78,    85,    91,    97,   104,
-     114,   121
+       0,    68,    68,    71,    74,    79,    86,    92,    98,   105,
+     115,   123
 };
 #endif
 
@@ -580,8 +581,8 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "pmkdisk", "prmdisk", "pfdisk", "pmount",
   "punmount", "pmkfs", "psize", "pfit", "punit", "ppath", "ptype",
   "pdelete", "pname", "padd", "pid", "pfs", "menos", "igual", "entero",
-  "cadena", "caracter", "ruta", "fit", "unity", "$accept", "INICIO",
-  "LEXPA", "COMMAND_MKDISK", "COMMAND_RMDISK", YY_NULLPTR
+  "cadena", "caracter", "ruta", "fit", "unity", "pcomillas", "$accept",
+  "INICIO", "LEXPA", "COMMAND_MKDISK", "COMMAND_RMDISK", YY_NULLPTR
 };
 #endif
 
@@ -592,7 +593,7 @@ static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281
+     275,   276,   277,   278,   279,   280,   281,   282
 };
 # endif
 
@@ -613,7 +614,7 @@ static const yytype_int8 yypact[] =
        3,   -15,   -11,     9,   -20,     1,    -8,     0,    -6,   -20,
       -5,   -10,    -4,     2,    -3,    -1,     4,     5,    -7,     6,
      -20,    -2,     7,   -19,   -20,     8,   -20,   -20,   -20,   -20,
-     -20
+      10,    11,   -20
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -624,7 +625,7 @@ static const yytype_int8 yydefact[] =
        0,     0,     0,     0,     2,     0,     3,     0,     4,     1,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        5,     0,     0,     0,    10,     0,     6,     7,     9,     8,
-      11
+       0,     0,    11
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -647,7 +648,7 @@ static const yytype_int8 yytable[] =
       15,    16,    17,    28,     5,    29,     1,     2,     7,     9,
       10,    11,    12,    13,    19,    14,    18,    24,    20,    21,
        0,     0,     0,    26,    22,    23,    25,     0,     0,     0,
-      30,     0,     0,    27
+       0,     0,     0,    27,    31,    30,     0,     0,    32
 };
 
 static const yytype_int8 yycheck[] =
@@ -655,31 +656,31 @@ static const yytype_int8 yycheck[] =
       10,    11,    12,    22,    19,    24,     3,     4,    19,     0,
        9,    19,    12,    19,    12,    20,    20,    24,    21,    20,
       -1,    -1,    -1,    25,    20,    20,    20,    -1,    -1,    -1,
-      22,    -1,    -1,    26
+      -1,    -1,    -1,    26,    24,    27,    -1,    -1,    27
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,    28,    29,    19,    30,    19,    31,     0,
+       0,     3,     4,    29,    30,    19,    31,    19,    32,     0,
        9,    19,    12,    19,    20,    10,    11,    12,    20,    12,
       21,    20,    20,    20,    24,    20,    25,    26,    22,    24,
-      22
+      27,    24,    27
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    27,    28,    29,    29,    30,    30,    30,    30,    30,
-      31,    31
+       0,    28,    29,    30,    30,    31,    31,    31,    31,    31,
+      32,    32
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     2,     2,     4,     5,     5,     5,     5,
-       4,     5
+       4,     7
 };
 
 
@@ -1470,75 +1471,75 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 67 "parser.y"
+#line 68 "parser.y"
                { }
-#line 1476 "parser.cpp"
+#line 1477 "parser.cpp"
     break;
 
   case 3:
-#line 70 "parser.y"
+#line 71 "parser.y"
                                {
             (yyvsp[0].mkdisk)->executeCommand((yyvsp[0].mkdisk));
         }
-#line 1484 "parser.cpp"
+#line 1485 "parser.cpp"
     break;
 
   case 4:
-#line 73 "parser.y"
+#line 74 "parser.y"
                                {
             (yyvsp[0].rmdisk)->executeCommand((yyvsp[0].rmdisk));
         }
-#line 1492 "parser.cpp"
+#line 1493 "parser.cpp"
     break;
 
   case 5:
-#line 78 "parser.y"
-                                         {
+#line 79 "parser.y"
+                                         { // -size = 2000
 
                 int size = atoi((yyvsp[0].TEXT));
                 ObjMkdisk *disk = new ObjMkdisk();
                 disk->size = size;
                 (yyval.mkdisk) = disk;
             }
-#line 1504 "parser.cpp"
+#line 1505 "parser.cpp"
     break;
 
   case 6:
-#line 85 "parser.y"
-                                                     {
+#line 86 "parser.y"
+                                                     { // -f = BF
 
                 string var_fit = (yyvsp[0].TEXT);
                 (yyvsp[-4].mkdisk)->fit = var_fit;
                 (yyval.mkdisk) = (yyvsp[-4].mkdisk);
             }
-#line 1515 "parser.cpp"
+#line 1516 "parser.cpp"
     break;
 
   case 7:
-#line 91 "parser.y"
-                                                        {
+#line 92 "parser.y"
+                                                        { // -u = K
 
                 string var_unity = (yyvsp[0].TEXT);
                 (yyvsp[-4].mkdisk)->unity = var_unity;
                 (yyval.mkdisk) = (yyvsp[-4].mkdisk);
             }
-#line 1526 "parser.cpp"
+#line 1527 "parser.cpp"
     break;
 
   case 8:
-#line 97 "parser.y"
-                                                       {
+#line 98 "parser.y"
+                                                       { // -path = /home/usr/algo.dk
 
                 string var_path = (yyvsp[0].TEXT);
                 (yyvsp[-4].mkdisk)->path = var_path;
                 (yyval.mkdisk) = (yyvsp[-4].mkdisk);
             }
-#line 1537 "parser.cpp"
+#line 1538 "parser.cpp"
     break;
 
   case 9:
-#line 104 "parser.y"
-                                                         {
+#line 105 "parser.y"
+                                                         { // -path = "/home/hola a todos/algo.dk"
 
                 string var_path = (yyvsp[0].TEXT);
                 var_path.erase(0, 1);
@@ -1546,11 +1547,11 @@ yyreduce:
                 (yyvsp[-4].mkdisk)->path = var_path;
                 (yyval.mkdisk) = (yyvsp[-4].mkdisk);
            }
-#line 1550 "parser.cpp"
+#line 1551 "parser.cpp"
     break;
 
   case 10:
-#line 114 "parser.y"
+#line 115 "parser.y"
                                        {
 
                 string var_path = (yyvsp[0].TEXT);
@@ -1558,24 +1559,24 @@ yyreduce:
                 disk->path = var_path;
                 (yyval.rmdisk) = disk;
             }
-#line 1562 "parser.cpp"
+#line 1563 "parser.cpp"
     break;
 
   case 11:
-#line 121 "parser.y"
-                                                      {
+#line 123 "parser.y"
+                                                                         {
+                string var_path = (yyvsp[-2].TEXT);
+                var_path.erase(0, 1);
+                var_path.erase(var_path.size()-1, 1);
+                (yyvsp[-6].rmdisk)->path = var_path;
 
-                 string var_path = (yyvsp[0].TEXT);
-                 var_path.erase(0, 1);
-                 var_path.erase(var_path.size()-1, 1);
-                 (yyvsp[-4].rmdisk)->path = var_path;
-                 (yyval.rmdisk) = (yyvsp[-4].rmdisk);
+                (yyval.rmdisk) = (yyvsp[-6].rmdisk);
             }
-#line 1575 "parser.cpp"
+#line 1576 "parser.cpp"
     break;
 
 
-#line 1579 "parser.cpp"
+#line 1580 "parser.cpp"
 
       default: break;
     }

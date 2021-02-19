@@ -372,8 +372,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 28
-#define YY_END_OF_BUFFER 29
+#define YY_NUM_RULES 29
+#define YY_END_OF_BUFFER 30
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -383,9 +383,9 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[94] =
     {   0,
-        0,    0,    0,    0,   29,   27,   26,   25,   27,   27,
-       24,   27,   17,   23,   27,   27,   27,    8,   27,   21,
-       21,   27,   27,   27,   27,   27,    9,   28,    0,   18,
+        0,    0,    0,    0,   30,   28,   27,   26,   25,   28,
+       24,   28,   17,   23,   28,   28,   28,    8,   28,   21,
+       21,   28,   28,   28,   28,   28,    9,   29,    0,   18,
         0,    0,    0,    0,   17,    0,   20,    0,    0,   16,
        15,    0,    0,    0,    0,    0,    0,    0,    0,   19,
         0,    0,    0,    0,    0,   14,    0,    0,    0,    0,
@@ -539,10 +539,10 @@ static const flex_int16_t yy_chk[288] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[29] =
+static const flex_int32_t yy_rule_can_match_eol[30] =
     {   0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 
-    0, 0, 0, 0, 0, 1, 0, 0, 0,     };
+    0, 0, 0, 0, 0, 0, 1, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -983,31 +983,36 @@ YY_RULE_SETUP
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
 	YY_BREAK
 case 25:
-/* rule 25 can match eol */
 YY_RULE_SETUP
-#line 62 "lexicon.l"
-{linea++; columna=0; anterior=0;}
+#line 61 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pcomillas;}
 	YY_BREAK
 case 26:
+/* rule 26 can match eol */
 YY_RULE_SETUP
 #line 63 "lexicon.l"
-{ columna++; }
+{linea++; columna=0; anterior=0;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 65 "lexicon.l"
+#line 64 "lexicon.l"
+{ columna++; }
+	YY_BREAK
+case 28:
+YY_RULE_SETUP
+#line 66 "lexicon.l"
 {
 
 std::cout<<"Error Lexico: "<<linea<<"\n";
 //printf("Error lexico en linea %d",linea);
 }
 	YY_BREAK
-case 28:
+case 29:
 YY_RULE_SETUP
-#line 70 "lexicon.l"
+#line 71 "lexicon.l"
 ECHO;
 	YY_BREAK
-#line 1011 "scanner.cpp"
+#line 1016 "scanner.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COM):
 	yyterminate();
@@ -1984,4 +1989,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 70 "lexicon.l"
+#line 71 "lexicon.l"

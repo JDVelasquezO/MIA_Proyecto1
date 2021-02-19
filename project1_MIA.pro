@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     parser.cpp \
     scanner.cpp \
     disk.cpp \
-    objrmdisk.cpp
+    objrmdisk.cpp \
+    methods.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -36,4 +37,5 @@ HEADERS += \
     parser.h \
     scanner.h \
     disk.h \
-    objrmdisk.h
+    objrmdisk.h \
+    methods.h

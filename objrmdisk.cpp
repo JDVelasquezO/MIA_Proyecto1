@@ -1,3 +1,4 @@
+#include "objrmdisk.h"
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
@@ -6,23 +7,13 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <errno.h>
-#include "objrmdisk.h"
+#include "methods.h"
 #include "string"
 using namespace std;
 
 objrmdisk::objrmdisk()
 {
 
-}
-
-bool isDirExist(string& path) {
-
-    struct stat info;
-    if (stat(path.c_str(), &info) != 0)
-    {
-        return false;
-    }
-    return (info.st_mode & S_IFDIR) != 0;
 }
 
 string createFolder(objrmdisk *disk) {
@@ -54,7 +45,7 @@ string createFolder(objrmdisk *disk) {
 
 bool removeDisk(objrmdisk *disk) {
     string path = createFolder(disk);
-    if (isDirExist(path)) {
+    if (Methods::isDirExist(path)) {
         remove(disk->path.c_str());
         return true;
     } else {
@@ -67,7 +58,7 @@ void objrmdisk::executeCommand(objrmdisk *disk) {
     cout << "------------INFORMACION DEL DISCO---------------------" << endl;
     cout << "La ruta es: " << disk->path << endl;
     if (removeDisk(disk)) {
-        cout << "Archivo eliminado exitosamente" << endl;
+        cout << "Disco eliminado exitosamente" << endl;
     } else {
         cout << "No se pudo eliminar archivo" << endl;
     }
