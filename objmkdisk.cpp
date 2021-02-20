@@ -153,6 +153,7 @@ void ObjMkdisk::assignUnity(ObjMkdisk *disk){
         fclose(file);
     }
 
+    newMbr.availableStorage = newMbr.mbr_tamano;
     // Llenamos las propiedades del mbr
     createMBR(newMbr, disk);
 }
@@ -166,20 +167,6 @@ void ObjMkdisk::executeCommand(ObjMkdisk *disk) {
     cout << "El ajuste es: " << disk->fit << endl;
 
     assignUnity(disk);
-
-    FILE *file;
-    file = fopen(disk->path.c_str(), "rb");
-    // fseek(file, 0, SEEK_SET);
-    mbr MBR;
-    fread(&MBR, sizeof(mbr), 1, file);
-    cout << MBR.mbr_fecha_creacion << endl;
-    for (int i = 0; i < 4; i++) {
-        /*if (tempMbr.mbr_partitions[i].part_status == '0'){
-            tempPart = tempMbr.mbr_partitions[i];
-            break;
-        }*/
-        cout << MBR.mbr_partitions[i].part_status << endl;
-    }
 }
 
 

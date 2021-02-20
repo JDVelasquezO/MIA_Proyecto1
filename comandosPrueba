@@ -6,10 +6,10 @@ mkdisk -size=10 -path="/home/jdvelasquezo/mis discos/Disco4.dk"
 rmDisk -path=/home/jdvelasquezo/disco2.dk
 rmdisk -path"/home/jdvelasquezo/mis discos/Disco3.dk"
 
-Mkdisk -Size=3000 -u=K -path=/home/jdvelasquezo/Disco1.dk
-fdisk -size=300 -path=/home/jdvelasquezo/Disco1.dk -name=Particion2
+Mkdisk -Size=1 -u=K -path=/home/jdvelasquezo/Disco1.dk
+fdisk -size=600 -path=/home/jdvelasquezo/Disco1.dk -name=Particion4 -u=B
 
-((\/{identificador})+)|
+((\/{identificador})+)| 
 
 char[16] date;
 time_t current_time;

@@ -18,6 +18,7 @@ typedef struct: public partition {
 
 typedef struct {
     int mbr_tamano;
+    int availableStorage;
     char mbr_fecha_creacion[16];
     int mbr_disk_signature;
     char disk_fit;

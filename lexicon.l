@@ -23,6 +23,7 @@ entero [0-9]+
 letra [a-zA-ZÑñáéíóúÁÉÍÓÚ]+
 fit [B|F|W]F
 unity [k]|[m]|[K]|[M]
+unityFd unity|[B]|[b]
 type [P]|[E]|[L]|[p]|[e]|[l]
 type_del [fast]|[full]
 
@@ -57,6 +58,7 @@ ruta (\/{identificador})+(".dk")
 {caracter} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return caracter;}
 {fit} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return fit;}
 {unity} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return unity;}
+{unityFd} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return unityFd;}
 {ruta} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return ruta;}
 {type} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type;}
 {type_del} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type_del;}

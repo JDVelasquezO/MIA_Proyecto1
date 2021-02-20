@@ -60,6 +60,7 @@ int yyerror(const char* mens) {
 %token<TEXT> ruta;
 %token<TEXT> fit;
 %token<TEXT> unity;
+%token<TEXT> unityFd;
 %token<TEXT> pcomillas;
 %token<TEXT> type;
 %token<TEXT> type_del;
@@ -160,7 +161,7 @@ COMMAND_FDISK: pfdisk{
                     $1->type = var_type;
                     $$ = $1;
               }
-            | COMMAND_FDISK menos punit igual unity {
+            | COMMAND_FDISK menos punit igual unityFd {
 
                     string var_unity = $5;
                     $1->unity = var_unity;
