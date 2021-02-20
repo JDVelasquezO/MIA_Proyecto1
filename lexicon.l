@@ -23,6 +23,8 @@ entero [0-9]+
 letra [a-zA-ZÑñáéíóúÁÉÍÓÚ]+
 fit [B|F|W]F
 unity [k]|[m]|[K]|[M]
+type [P]|[E]|[L]|[p]|[e]|[l]
+type_del [fast]|[full]
 
 identificador {letra}({letra}|{entero}|"_"|".")*
 caracter "\'"("\\")?({letra}|{entero})"\'"
@@ -56,9 +58,12 @@ ruta (\/{identificador})+(".dk")
 {fit} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return fit;}
 {unity} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return unity;}
 {ruta} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return ruta;}
+{type} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type;}
+{type_del} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type_del;}
+{identificador} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return identificador;}
 "=" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return igual;}
 "-" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
-"\"" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pcomillas;}
+'\"' {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pcomillas;}
 
 "\n" {linea++; columna=0; anterior=0;}
 [[:blank:]] { columna++; }

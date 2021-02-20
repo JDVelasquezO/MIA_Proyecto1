@@ -6,6 +6,7 @@
 #include <iostream>
 #include "objmkdisk.h"
 #include "objrmdisk.h"
+#include "objfdisk.h"
 using namespace std;
 
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -29,6 +30,7 @@ int yyerror(const char* mens) {
     char TEXT[256];
     class ObjMkdisk *mkdisk;
     class objrmdisk *rmdisk;
+    class ObjFdisk *fdisk;
 }
 
 // TERMINALES TIPO TEXT
@@ -50,6 +52,7 @@ int yyerror(const char* mens) {
 %token<TEXT> pfs;
 
 %token<TEXT> menos;
+%token<TEXT> identificador;
 %token<TEXT> igual;
 %token<TEXT> entero;
 %token<TEXT> cadena;
@@ -58,30 +61,39 @@ int yyerror(const char* mens) {
 %token<TEXT> fit;
 %token<TEXT> unity;
 %token<TEXT> pcomillas;
+%token<TEXT> type;
+%token<TEXT> type_del;
 
 // NO TERMINALES
 %type<mkdisk> COMMAND_MKDISK;
 %type<rmdisk> COMMAND_RMDISK;
+%type<fdisk> COMMAND_FDISK;
 %start INICIO
 %%
 
 INICIO : LEXPA { }
 ;
 
-LEXPA:  pmkdisk COMMAND_MKDISK {
-            $2->executeCommand($2);
+LEXPA: COMMAND_MKDISK {
+            $1->executeCommand($1);
         }
-      | prmdisk COMMAND_RMDISK {
-            $2->executeCommand($2);
+      | COMMAND_RMDISK {
+            $1->executeCommand($1);
+        }
+      | COMMAND_FDISK {
+            $1->executeCommand($1);
         }
 ;
 
-COMMAND_MKDISK: menos psize igual entero { // -size = 2000
+COMMAND_MKDISK: pmkdisk {
+                    ObjMkdisk *disk = new ObjMkdisk();
+                    $$ = disk;
+                }
+               | COMMAND_MKDISK menos psize igual entero { // -size = 2000
 
-                int size = atoi($4);
-                ObjMkdisk *disk = new ObjMkdisk();
-                disk->size = size;
-                $$ = disk;
+                int size = atoi($5);
+                $1->size = size;
+                $$ = $1;
             }
                | COMMAND_MKDISK menos pfit igual fit { // -f = BF
 
@@ -112,15 +124,17 @@ COMMAND_MKDISK: menos psize igual entero { // -size = 2000
            }
 ;
 
-COMMAND_RMDISK: menos ppath igual ruta {
-
-                string var_path = $4;
+COMMAND_RMDISK: prmdisk {
                 objrmdisk *disk = new objrmdisk();
-                disk->path = var_path;
                 $$ = disk;
             }
+            | COMMAND_RMDISK menos ppath igual ruta {
+                string var_path = $5;
+                $1->path = var_path;
+                $$ = $1;
+            }
 
-            | COMMAND_RMDISK menos ppath igual pcomillas ruta pcomillas  {
+            | COMMAND_RMDISK menos ppath igual cadena {
                 string var_path = $5;
                 var_path.erase(0, 1);
                 var_path.erase(var_path.size()-1, 1);
@@ -129,3 +143,85 @@ COMMAND_RMDISK: menos ppath igual ruta {
                 $$ = $1;
             }
 ;
+
+COMMAND_FDISK: pfdisk{
+                ObjFdisk *disk = new ObjFdisk();
+                $$ = disk;
+            }
+            | COMMAND_FDISK menos psize igual entero {
+
+                    int size = atoi($5);
+                    $1->size = size;
+                    $$ = $1;
+              }
+            | COMMAND_FDISK menos ptype igual type {
+
+                    string var_type = $5;
+                    $1->type = var_type;
+                    $$ = $1;
+              }
+            | COMMAND_FDISK menos punit igual unity {
+
+                    string var_unity = $5;
+                    $1->unity = var_unity;
+                    $$ = $1;
+              }
+            | COMMAND_FDISK menos ppath igual ruta {
+
+                    string var_path = $5;
+                    $1->path = var_path;
+                    $$ = $1;
+              }
+            | COMMAND_FDISK menos ppath igual cadena { // -path = "/home/hola a todos/algo.dk"
+
+                     string var_path = $5;
+                     var_path.erase(0, 1);
+                     var_path.erase(var_path.size()-1, 1);
+                     $1->path = var_path;
+                     $$ = $1;
+              }
+            | COMMAND_FDISK menos pfit igual fit { // -f = BF
+
+                    string var_fit = $5;
+                    $1->fit = var_fit;
+                    $$ = $1;
+            }
+            | COMMAND_FDISK menos pdelete igual type_del menos pname igual cadena menos ppath igual ruta {
+
+                    string var_del = $5;
+                    string var_name = $9;
+                    string var_path = $13;
+                    $1->del = var_del;
+                    $1->name = var_name;
+                    $1->path = var_path;
+                    $$ = $1;
+              }
+            | COMMAND_FDISK menos pname igual cadena {
+
+                    string var_name = $5;
+                    $1->name = var_name;
+                    $$ = $1;
+              }
+
+            | COMMAND_FDISK menos pname igual identificador {
+
+                    string var_name = $5;
+                    $1->name = var_name;
+                    $$ = $1;
+              }
+
+            | COMMAND_FDISK menos padd igual entero {
+
+                    int var_add = atoi($5);
+                    $1->add = var_add;
+                    $$ = $1;
+              }
+;
+
+
+
+
+
+
+
+

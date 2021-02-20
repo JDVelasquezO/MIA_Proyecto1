@@ -55,6 +55,7 @@ bool removeDisk(objrmdisk *disk) {
 
 void objrmdisk::executeCommand(objrmdisk *disk) {
 
+    cout << "\n" << endl;
     cout << "------------INFORMACION DEL DISCO---------------------" << endl;
     cout << "La ruta es: " << disk->path << endl;
     if (removeDisk(disk)) {

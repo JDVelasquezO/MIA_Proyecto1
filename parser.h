@@ -66,14 +66,17 @@ extern int yydebug;
     pid = 272,
     pfs = 273,
     menos = 274,
-    igual = 275,
-    entero = 276,
-    cadena = 277,
-    caracter = 278,
-    ruta = 279,
-    fit = 280,
-    unity = 281,
-    pcomillas = 282
+    identificador = 275,
+    igual = 276,
+    entero = 277,
+    cadena = 278,
+    caracter = 279,
+    ruta = 280,
+    fit = 281,
+    unity = 282,
+    pcomillas = 283,
+    type = 284,
+    type_del = 285
   };
 #endif
 
@@ -81,14 +84,15 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "parser.y"
+#line 28 "parser.y"
 
     //se especifican los tipo de valores para los no terminales y lo terminales
     char TEXT[256];
     class ObjMkdisk *mkdisk;
     class objrmdisk *rmdisk;
+    class ObjFdisk *fdisk;
 
-#line 92 "parser.h"
+#line 96 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

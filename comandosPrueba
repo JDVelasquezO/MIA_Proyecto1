@@ -1,0 +1,26 @@
+mkdisk -size=1 -f=BF -path=/home/jdvelasquezo/disco2.dk -u=K
+Mkdisk -size=3000 -path=/home/jdvelasquezo/Disco2.dk -U=K
+mkdisk -size=5 -path="/home/jdvelasquezo/mis discos/Disco3.dk" -u=M
+mkdisk -size=10 -path="/home/jdvelasquezo/mis discos/Disco4.dk"
+
+rmDisk -path=/home/jdvelasquezo/disco2.dk
+rmdisk -path"/home/jdvelasquezo/mis discos/Disco3.dk"
+
+Mkdisk -Size=3000 -u=K -path=/home/jdvelasquezo/Disco1.dk
+fdisk -size=300 -path=/home/jdvelasquezo/Disco1.dk -name=Particion2
+
+((\/{identificador})+)|
+
+char[16] date;
+time_t current_time;
+current_time = time(nullptr);
+ctime(&current_time);
+strcpy(date, ctime(&current_time));
+string actual_date = date;
+newMbr.mbr_fecha_creacion = actual_date;
+
+newMbr.mbr_disk_signature (rand() % 100);
+strcpy()
+
+flex --header-file=scanner.h -o scanner.cpp lexicon.l
+bison -o parser.cpp --defines=parser.h parser.y
