@@ -18,12 +18,12 @@ void ObjFdisk::printData(string path){
         //return 0;
     }
     mbr MBR;
-    fseek(arch, 0, SEEK_SET);
+    fseek(arch, 0, SEEK_SET); // Nos posicionamos en el primer byte del archivo
     fread(&MBR,sizeof(mbr),1,arch);
     fclose(arch);
     std::cout << "\n-------------------------------DATOS DEL DISCO----------------------------------\n";
     std::cout << "\nMBR SIGNATURE: "<< MBR.mbr_disk_signature;
-    std::cout << "\nMBR SIZE: "<< MBR.mbr_tamano;
+    // std::cout << "\nMBR SIZE: "<< MBR.mbr_tamano;
 
 
     for(int i=0;i<4;i++){
@@ -53,11 +53,13 @@ void createPartition(ObjFdisk *disk) {
 
     fseek(file, 0, SEEK_SET); // Moverse 0 caracteres desde el inicio del archivo
     mbr tempMbr;
-    cout << sizeof(mbr) << endl;
-    // Se recupera lo que hay en el archivo en tempMbr, del tamaño del mbr escrito antes
-    fread(&tempMbr, sizeof(mbr), 1, file);
+    // Se recupera lo que hay en el archivo en tempMbr, del tamaño del struct mbr
+    int res = fread(&tempMbr, sizeof(mbr), 1, file);
 
-    cout << tempMbr.mbr_tamano << endl;
+    if (res != 1) { // Si no devuelve 1, hay error
+        exit(1);
+    }
+
     if (disk->unity == "K" || disk->unity == "k") {
         sizePart = (disk->size) * 1024;
     } else if (disk->unity == "M" || disk->unity == "m") {
@@ -66,12 +68,21 @@ void createPartition(ObjFdisk *disk) {
         sizePart = (disk->size);
     }
 
+    partition tempPart;
+    for (int i = 0; i < 4; i++) {
+        if (tempMbr.mbr_partitions[i].part_status == '0'){
+            cout << tempMbr.mbr_partitions[i].part_status << endl;
+            tempPart = tempMbr.mbr_partitions[i];
+            break;
+        }
+    }
+
     if (disk->fit == "BF") {
-        tempMbr.mbr_partitions[0].part_fit = 'BF';
+        tempPart.part_fit = 'BF';
     } else if (disk->fit == "FF") {
-        tempMbr.mbr_partitions[0].part_fit = 'FF';
-    } else {
-        tempMbr.mbr_partitions[0].part_fit = 'WF';
+        tempPart.part_fit = 'FF';
+    } else if (disk->fit == "WF") {
+        tempPart.part_fit = 'WF';
     }
 
     strcpy(tempMbr.mbr_partitions[0].part_name, disk->name.c_str());

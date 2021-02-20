@@ -75,8 +75,9 @@ string createFolder(ObjMkdisk *disk) {
     return newRoute;
 }
 
-void fillDiskWithMbr(mbr newMbr, FILE *file, ObjMkdisk *disk) {
+void fillDiskWithMbr(mbr newMbr, ObjMkdisk *disk) {
 
+    FILE *file;
     // SE CREA PARTICION QUE DESPUES ESTARA EN EL MBR
     partition firstPartition;
     firstPartition.part_status = '0';
@@ -89,17 +90,17 @@ void fillDiskWithMbr(mbr newMbr, FILE *file, ObjMkdisk *disk) {
         newMbr.mbr_partitions[i] = firstPartition;
     }
 
-    file = fopen(disk->path.c_str(), "rb+"); // Se abre el archivo bin con permisos mixtos
+    file = fopen(disk->path.c_str(), "wb+"); // Se abre el archivo bin con permisos mixtos
     if(file != NULL){
         fseek(file, 0, SEEK_SET);
-        fwrite(&firstPartition, sizeof(newMbr), 1, file);
+        fwrite(&newMbr, sizeof(newMbr), 1, file);
         fclose(file);
         cout << "Se creó el disco correctamente" << endl;
         cout << "Se agrego el MBR correctamente " << endl;
     }
 }
 
-void createMBR(mbr newMbr, FILE *file, ObjMkdisk *disk) {
+void createMBR(mbr newMbr, ObjMkdisk *disk) {
     // OBTENEMOS LA HORA LOCAL
     time_t now = time(0);
     tm* localtm = localtime(&now);
@@ -112,7 +113,7 @@ void createMBR(mbr newMbr, FILE *file, ObjMkdisk *disk) {
     char* fitPointer = &newMbr.disk_fit;
     strcpy(fitPointer, disk->fit.c_str());
 
-    fillDiskWithMbr(newMbr, file, disk);
+    fillDiskWithMbr(newMbr, disk);
 }
 
 void ObjMkdisk::assignUnity(ObjMkdisk *disk){
@@ -123,13 +124,9 @@ void ObjMkdisk::assignUnity(ObjMkdisk *disk){
     string newRoute = createFolder(disk); // ruta nueva solo de dirs
     makePath(newRoute); // Se crean los directorios
 
-    file = fopen(disk->path.c_str(), "wb"); // Creamos el archivo binario en la ruta del folder
-    if (file == NULL) {
-        exit(1);
-    }
-
     // ASIGNACION DE TAMAÑO AL DISCO Y AL MBR
     if (disk->unity == "K" || disk->unity == "k") {
+        file = fopen(disk->path.c_str(), "wb"); // Creamos el archivo binario en la ruta del folder
         newMbr.mbr_tamano = (disk->size)*1024;
         for (int i = 0; i < 1024; i++) { // Es hasta 1024 porque es 1KB
             buffer[i] = '\0'; // Se llena la variable con el caracter 0. 1 char = 1 byte
@@ -143,6 +140,7 @@ void ObjMkdisk::assignUnity(ObjMkdisk *disk){
     }
 
     if (disk->unity == "M" || disk->unity == "m") {
+        file = fopen(disk->path.c_str(), "wb"); // Creamos el archivo binario en la ruta del folder
         newMbr.mbr_tamano = (disk->size)*1024*1024;
         for (int i = 0; i < 1024; i++) {
             buffer[i] = '\0';
@@ -154,10 +152,9 @@ void ObjMkdisk::assignUnity(ObjMkdisk *disk){
 
         fclose(file);
     }
-    // ---------------------------------------
 
     // Llenamos las propiedades del mbr
-    createMBR(newMbr, file, disk);
+    createMBR(newMbr, disk);
 }
 
 void ObjMkdisk::executeCommand(ObjMkdisk *disk) {
@@ -169,6 +166,20 @@ void ObjMkdisk::executeCommand(ObjMkdisk *disk) {
     cout << "El ajuste es: " << disk->fit << endl;
 
     assignUnity(disk);
+
+    FILE *file;
+    file = fopen(disk->path.c_str(), "rb");
+    // fseek(file, 0, SEEK_SET);
+    mbr MBR;
+    fread(&MBR, sizeof(mbr), 1, file);
+    cout << MBR.mbr_fecha_creacion << endl;
+    for (int i = 0; i < 4; i++) {
+        /*if (tempMbr.mbr_partitions[i].part_status == '0'){
+            tempPart = tempMbr.mbr_partitions[i];
+            break;
+        }*/
+        cout << MBR.mbr_partitions[i].part_status << endl;
+    }
 }
 
 
