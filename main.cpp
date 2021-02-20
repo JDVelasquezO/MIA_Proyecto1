@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
                 }else {
                     printf("\n\nhay errores\n\n");
                 }
-
             }
         }
 

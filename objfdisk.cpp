@@ -69,55 +69,61 @@ void createPartition(ObjFdisk *disk) {
     } else {
         tempMbr.availableStorage -= sizePart;
         partition* pointerTempPart = NULL;
-        partition tempPart;
+        bool n_part = false;
         for (int i = 0; i < 4; i++) {
             if (tempMbr.mbr_partitions[i].part_status == '0'){
                 // cout << tempMbr.mbr_partitions[i].part_status << endl;
                 pointerTempPart = &tempMbr.mbr_partitions[i];
+                n_part = true;
                 break;
             }
         }
 
-        // pointerTempPart = &tempPart;
+        if (n_part) {
 
-        if (disk->fit == "BF") {
-            pointerTempPart->part_fit = 'BF';
-        } else if (disk->fit == "FF") {
-            pointerTempPart->part_fit = 'FF';
-        } else if (disk->fit == "WF") {
-            pointerTempPart->part_fit = 'WF';
+            if (disk->fit == "BF") {
+                pointerTempPart->part_fit = 'BF';
+            } else if (disk->fit == "FF") {
+                pointerTempPart->part_fit = 'FF';
+            } else if (disk->fit == "WF") {
+                pointerTempPart->part_fit = 'WF';
+            }
+
+            strcpy(pointerTempPart->part_name, disk->name.c_str());
+            pointerTempPart->part_size = sizePart;
+            pointerTempPart->part_start = sizeof(mbr);
+            pointerTempPart->part_status = '1';
+
+            // Si es primaria
+            if(disk->type=="P") {
+                pointerTempPart->part_type = 'P';
+
+            // Si es extendida
+            } else if(disk->type=="E") {
+
+                tempMbr.mbr_partitions[0].part_type = 'E';
+                extended ebrPartition;
+                ebrPartition.part_fit = '-';
+                ebrPartition.part_name[0] = '\0';
+                ebrPartition.part_next = -1;
+                ebrPartition.part_size = -1;
+                ebrPartition.part_start = -1;
+                ebrPartition.part_status = '0';
+
+                fseek(file, tempMbr.mbr_partitions[0].part_start, SEEK_SET);
+                fwrite(&ebrPartition, sizeof(ebrPartition), 1, file); // Se escribe la particion extendida
+            }
+
+            fseek(file, 0, SEEK_SET); // Se modifica el archivo original
+            fwrite(&tempMbr, sizeof(mbr), 1, file);
+            fclose(file);
+
+            printData(disk->path.c_str());
+
+        } else {
+            cout << "Error, ya se llego al límite de particiones" << endl;
         }
 
-        strcpy(pointerTempPart->part_name, disk->name.c_str());
-        pointerTempPart->part_size = sizePart;
-        pointerTempPart->part_start = sizeof(mbr);
-        pointerTempPart->part_status = '1';
-
-        // Si es primaria
-        if(disk->type=="P") {
-            pointerTempPart->part_type = 'P';
-
-        // Si es extendida
-        } else if(disk->type=="E") {
-
-            tempMbr.mbr_partitions[0].part_type = 'E';
-            extended ebrPartition;
-            ebrPartition.part_fit = '-';
-            ebrPartition.part_name[0] = '\0';
-            ebrPartition.part_next = -1;
-            ebrPartition.part_size = -1;
-            ebrPartition.part_start = -1;
-            ebrPartition.part_status = '0';
-
-            fseek(file, tempMbr.mbr_partitions[0].part_start, SEEK_SET);
-            fwrite(&ebrPartition, sizeof(ebrPartition), 1, file); // Se escribe la particion extendida
-        }
-
-        fseek(file, 0, SEEK_SET); // Se modifica el archivo original
-        fwrite(&tempMbr, sizeof(mbr), 1, file);
-        fclose(file);
-
-        printData(disk->path.c_str());
     }
 }
 
