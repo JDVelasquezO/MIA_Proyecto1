@@ -7,10 +7,10 @@ rmDisk -path=/home/jdvelasquezo/disco2.dk
 rmdisk -path"/home/jdvelasquezo/mis discos/Disco3.dk"
 
 Mkdisk -Size=1 -u=K -path=/home/jdvelasquezo/Disco1.dk
-fdisk -size=600 -path=/home/jdvelasquezo/Disco1.dk -name=Particion5 -u=B
-fdisk -size=200 -path=/home/jdvelasquezo/Disco1.dk -name=Particion5 -u=B
-fdisk -size=100 -path=/home/jdvelasquezo/Disco1.dk -name=Particion5 -u=B
-fdisk -size=20 -path=/home/jdvelasquezo/Disco1.dk -name=Particion5 -u=B
+fdisk -size=600 -path=/home/jdvelasquezo/Disco1.dk -name=Particion1 -u=B
+fdisk -size=200 -path=/home/jdvelasquezo/Disco1.dk -name=Particion2 -u=B
+fdisk -size=100 -path=/home/jdvelasquezo/Disco1.dk -name=Particion3 -u=B
+fdisk -size=20 -path=/home/jdvelasquezo/Disco1.dk -name=Particion4 -u=B -type=E
 
 ((\/{identificador})+)| 
 

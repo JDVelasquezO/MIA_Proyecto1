@@ -23,7 +23,7 @@ entero [0-9]+
 letra [a-zA-ZÑñáéíóúÁÉÍÓÚ]+
 fit [B|F|W]F
 unity [k]|[m]|[K]|[M]
-unityFd unity|[B]|[b]
+unityFd [k]|[m]|[K]|[M]|[B]|[b]
 type [P]|[E]|[L]|[p]|[e]|[l]
 type_del [fast]|[full]
 

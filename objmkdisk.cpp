@@ -82,7 +82,7 @@ void fillDiskWithMbr(mbr newMbr, ObjMkdisk *disk) {
     partition firstPartition;
     firstPartition.part_status = '0';
     firstPartition.part_type = '-';
-    firstPartition.part_fit = '-';
+    firstPartition.part_fit[0] = '\0';
     firstPartition.part_size = 0;
     firstPartition.part_start = 0;
     firstPartition.part_name[0] = '\0';

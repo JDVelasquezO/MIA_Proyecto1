@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
     while(line!="salir"){    //esto me sirve para seguir leyendo siempre los comandos sin salirme
         cout << p;
         line = qtin.readLine();
-        if(line!="salir"){
-            if(line.isEmpty()==false){
+        if(line!="salir") {
+            if(line.isEmpty()==false) {
                 YY_BUFFER_STATE buffer = yy_scan_string(line.toUtf8().constData());
 
                 // Limpiamos los contadores ya que son variables globales
@@ -31,13 +31,12 @@ int main(int argc, char *argv[])
 
                 if(yyparse()==0) // Si nos da un número negativo, signifca error.
                 {
-                    printf("\n\Comando ejecutado correctamente\n\n");
+                    printf("\n\Compilado exitosamente\n\n");
                 }else {
                     printf("\n\nhay errores\n\n");
                 }
             }
         }
-
     }
 }
 

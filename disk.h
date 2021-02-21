@@ -5,7 +5,7 @@ using namespace std;
 
 typedef struct {
     char part_status;
-    char part_fit;
+    char part_fit[2];
     int part_start;
     int part_size;
     char part_name[16];
