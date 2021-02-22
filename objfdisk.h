@@ -8,6 +8,7 @@ class ObjFdisk
 public:
     ObjFdisk();
     void executeCommand(ObjFdisk *disk);
+    void executeDelete(ObjFdisk *disk);
     void printData(string path);
 
     int size;

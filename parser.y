@@ -64,6 +64,7 @@ int yyerror(const char* mens) {
 %token<TEXT> pcomillas;
 %token<TEXT> type;
 %token<TEXT> type_del;
+%token<TEXT> negativo;
 
 // NO TERMINALES
 %type<mkdisk> COMMAND_MKDISK;
@@ -187,16 +188,6 @@ COMMAND_FDISK: pfdisk{
                     $1->fit = var_fit;
                     $$ = $1;
             }
-            | COMMAND_FDISK menos pdelete igual type_del menos pname igual cadena menos ppath igual ruta {
-
-                    string var_del = $5;
-                    string var_name = $9;
-                    string var_path = $13;
-                    $1->del = var_del;
-                    $1->name = var_name;
-                    $1->path = var_path;
-                    $$ = $1;
-              }
             | COMMAND_FDISK menos pname igual cadena {
 
                     string var_name = $5;
@@ -204,24 +195,20 @@ COMMAND_FDISK: pfdisk{
                     $$ = $1;
               }
 
+            | COMMAND_FDISK menos pdelete igual identificador {
+
+                    string var_path = $5;
+                    $1->del = var_path;
+                    $$ = $1;
+             }
+
             | COMMAND_FDISK menos pname igual identificador {
 
                     string var_name = $5;
                     $1->name = var_name;
                     $$ = $1;
               }
-
-            | COMMAND_FDISK menos padd igual entero {
-
-                    int var_add = atoi($5);
-                    $1->add = var_add;
-                    $$ = $1;
-              }
 ;
-
-
-
-
 
 
 

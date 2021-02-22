@@ -77,7 +77,8 @@ extern int yydebug;
     unityFd = 283,
     pcomillas = 284,
     type = 285,
-    type_del = 286
+    type_del = 286,
+    negativo = 287
   };
 #endif
 
@@ -93,7 +94,7 @@ union YYSTYPE
     class objrmdisk *rmdisk;
     class ObjFdisk *fdisk;
 
-#line 97 "parser.h"
+#line 98 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -31,6 +31,7 @@ identificador {letra}({letra}|{entero}|"_"|".")*
 caracter "\'"("\\")?({letra}|{entero})"\'"
 cadena [\"][^\"\n]*[\"\n]
 ruta (\/{identificador})+(".dk")
+negativo ["-"]?[{entero}]
 
 %x COM
 %%
@@ -63,6 +64,7 @@ ruta (\/{identificador})+(".dk")
 {type} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type;}
 {type_del} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type_del;}
 {identificador} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return identificador;}
+{negativo} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return negativo;}
 "=" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return igual;}
 "-" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
 '\"' {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pcomillas;}

@@ -11,7 +11,7 @@ ObjFdisk::ObjFdisk()
 {
     unity = "K";
     type = "P";
-    fit = "WF";
+    fit = 'W';
 }
 
 void printData(string path) {
@@ -55,19 +55,22 @@ void fillPartitions(bool n_part, LinkedList *linkedListPrimary, LinkedList *link
                 cout << "Solo puede existir 1 particion extendida " << endl;
             } else {
                 if (disk->fit == "BF") {
-                    pointerTempPart->part_fit[0] = 'B';
-                    pointerTempPart->part_fit[1] = 'F';
+                    pointerTempPart->part_fit = 'B';
                 } else if (disk->fit == "FF") {
-                    pointerTempPart->part_fit[0] = 'F';
-                    pointerTempPart->part_fit[1] = 'F';
+                    pointerTempPart->part_fit = 'F';
                 } else if (disk->fit == "WF") {
-                    pointerTempPart->part_fit[0] = 'W';
-                    pointerTempPart->part_fit[1] = 'F';
+                    pointerTempPart->part_fit = 'W';
                 }
 
                 strcpy(pointerTempPart->part_name, disk->name.c_str());
                 pointerTempPart->part_size = sizePart;
-                pointerTempPart->part_start = sizeof(mbr);
+                int tempSize = 0;
+                for (int i = 0; i < 4; i++) {
+                    if (tempMbr.mbr_partitions[i].part_start != 0) {
+                        tempSize = tempMbr.mbr_partitions[i].part_start;
+                    }
+                }
+                pointerTempPart->part_start = sizeof(mbr) + tempSize;
                 pointerTempPart->part_status = '1';
 
                 // Si es primaria
@@ -79,7 +82,7 @@ void fillPartitions(bool n_part, LinkedList *linkedListPrimary, LinkedList *link
 
                     pointerTempPart->part_type = 'E';
                     extended ebrPartition;
-                    ebrPartition.part_fit[0] = '\0';
+                    ebrPartition.part_fit = 'W';
                     ebrPartition.part_name[0] = '\0';
                     ebrPartition.part_next = -1;
                     ebrPartition.part_size = -1;
@@ -101,11 +104,19 @@ void fillPartitions(bool n_part, LinkedList *linkedListPrimary, LinkedList *link
                 printData(disk->path.c_str());
             }
         }
-
-
     } else {
         cout << "Error, ya se llego al límite de particiones" << endl;
     }
+}
+
+bool isPartExtended(mbr tempMbr, ObjFdisk *disk) {
+    for (int i = 0; i < 4; i++) {
+        if (tempMbr.mbr_partitions[i].part_type == 'E' || tempMbr.mbr_partitions[i].part_type == 'e') {
+            if (tempMbr.mbr_partitions[i].part_size >= disk->size)
+                return true;
+        }
+    }
+    return false;
 }
 
 void validateRequeriments(int sizePart, mbr tempMbr, ObjFdisk *disk, FILE *file) {
@@ -123,6 +134,16 @@ void validateRequeriments(int sizePart, mbr tempMbr, ObjFdisk *disk, FILE *file)
                 linkedListExtended->addStart('E');
             } else if (disk->type == "L" || disk->type == "l") {
                 cout << "Particion Logica" << endl;
+
+                if (isPartExtended(tempMbr, disk)) {
+                    pointerTempPart = &tempMbr.mbr_partitions[i];
+                    n_part = true;
+                    break;
+                } else {
+                    cout << "No existe extendida para una lógica" << endl;
+                    break;
+                }
+
             } else {
                 linkedListPrimary->addStart('P');
             }
@@ -193,13 +214,49 @@ string createFolder(ObjFdisk *disk) {
     return newRoute;
 }
 
+void deletePartition(ObjFdisk *disk) {
+
+    FILE *file;
+    file = fopen(disk->path.c_str(), "rb+");
+    fseek(file, 0, SEEK_SET); // Moverse 0 caracteres desde el inicio del archivo
+    mbr tempMbr;
+    fread(&tempMbr, sizeof(mbr), 1, file);
+
+    for (int i = 0; i < 4; i++) {
+        if (tempMbr.mbr_partitions[i].part_name == disk->name) {
+            partition firstPartition;
+            firstPartition.part_status = '0';
+            firstPartition.part_type = '-';
+            firstPartition.part_fit = 'W';
+            firstPartition.part_size = 0;
+            firstPartition.part_start = 0;
+            firstPartition.part_name[0] = '\0';
+            tempMbr.mbr_partitions[i] = firstPartition;
+            break;
+        } else {
+            cout << "No se encontro una particion con ese nombre" << endl;
+        }
+    }
+
+}
+
 void ObjFdisk::executeCommand(ObjFdisk *disk) {
 
     string path = createFolder(disk);
     if (Methods::isDirExist(path)) {
-        createPartition(disk);
+
+        if (disk->del == "fast" || disk->del == "full") {
+            deletePartition(disk);
+        } else {
+            createPartition(disk);
+        }
     } else {
         cout << "La ruta no existe";
     }
-
 }
+
+
+
+
+
+
