@@ -90,7 +90,7 @@ void fillDiskWithMbr(mbr newMbr, ObjMkdisk *disk) {
         newMbr.mbr_partitions[i] = firstPartition;
     }
 
-    file = fopen(disk->path.c_str(), "wb+"); // Se abre el archivo bin con permisos mixtos
+    file = fopen(disk->path.c_str(), "rb+"); // Se abre el archivo bin con permisos mixtos
     if(file != NULL){
         fseek(file, 0, SEEK_SET);
         fwrite(&newMbr, sizeof(newMbr), 1, file);
@@ -168,6 +168,3 @@ void ObjMkdisk::executeCommand(ObjMkdisk *disk) {
 
     assignUnity(disk);
 }
-
-
-

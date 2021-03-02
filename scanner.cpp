@@ -372,8 +372,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 34
-#define YY_END_OF_BUFFER 35
+#define YY_NUM_RULES 33
+#define YY_END_OF_BUFFER 34
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -383,18 +383,18 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[109] =
     {   0,
-        0,    0,    0,    0,   35,   33,   32,   31,   33,   33,
-       29,   33,   17,   28,   25,   22,   26,   26,   24,    8,
-       26,   21,   24,   21,   26,   26,   24,   26,   25,   25,
-        9,   26,   27,   33,   34,    0,   18,   27,    0,    0,
-        0,    0,    0,   17,   26,   26,   26,   26,   20,   26,
-       26,   16,   15,   26,   26,   26,   26,   26,   26,   26,
-       26,   20,   30,   19,    0,    0,    0,    0,    0,   26,
-       14,   26,   26,   26,   26,   26,   26,   26,   26,   26,
-       26,   26,    0,    0,   26,   26,   26,    6,   26,   13,
-       10,   26,    7,   11,   26,   23,   26,    3,   26,    4,
+        0,    0,    0,    0,   34,   32,   31,   30,   32,   32,
+       28,   32,   17,   27,   24,   21,   25,   25,   23,    8,
+       25,   21,   23,   21,   25,   25,   23,   25,   24,   24,
+        9,   25,   26,   32,   33,    0,   18,   26,    0,    0,
+        0,    0,    0,   17,   25,   25,   25,   25,   20,   25,
+       25,   16,   15,   25,   25,   25,   25,   25,   25,   25,
+       25,   20,   29,   19,    0,    0,    0,    0,    0,   25,
+       14,   25,   25,   25,   25,   25,   25,   25,   25,   25,
+       25,   25,    0,    0,   25,   25,   25,    6,   25,   13,
+       10,   25,    7,   11,   25,   22,   25,    3,   25,    4,
 
-       26,   26,   12,    1,    2,   26,    5,    0
+       25,   25,   12,    1,    2,   25,    5,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -616,10 +616,10 @@ static const flex_int16_t yy_chk[603] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[35] =
+static const flex_int32_t yy_rule_can_match_eol[34] =
     {   0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,     };
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -868,7 +868,7 @@ YY_DECL
 		}
 
 	{
-#line 37 "lexicon.l"
+#line 36 "lexicon.l"
 
 
 #line 875 "scanner.cpp"
@@ -940,181 +940,176 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 39 "lexicon.l"
+#line 38 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pmkdisk;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 40 "lexicon.l"
+#line 39 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return prmdisk;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 41 "lexicon.l"
+#line 40 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pfdisk;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 42 "lexicon.l"
+#line 41 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pmount;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 43 "lexicon.l"
+#line 42 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return punmount;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 44 "lexicon.l"
+#line 43 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pmkfs;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 46 "lexicon.l"
+#line 45 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return psize;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 47 "lexicon.l"
+#line 46 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pfit;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 48 "lexicon.l"
+#line 47 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return punit;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 49 "lexicon.l"
+#line 48 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return ppath;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 50 "lexicon.l"
+#line 49 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return ptype;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 51 "lexicon.l"
+#line 50 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pdelete;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 52 "lexicon.l"
+#line 51 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pname;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 53 "lexicon.l"
+#line 52 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return padd;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 54 "lexicon.l"
+#line 53 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pid;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 55 "lexicon.l"
+#line 54 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pfs;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 57 "lexicon.l"
+#line 56 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return entero;}
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 58 "lexicon.l"
+#line 57 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return cadena;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 59 "lexicon.l"
+#line 58 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return caracter;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 60 "lexicon.l"
+#line 59 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return fit;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 61 "lexicon.l"
+#line 60 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return unity;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 62 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return unityFd;}
+#line 61 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return ruta;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 63 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return ruta;}
+#line 62 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 64 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type;}
+#line 63 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type_del;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 65 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return type_del;}
+#line 64 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return identificador;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 66 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return identificador;}
+#line 65 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return negativo;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 67 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return negativo;}
+#line 66 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return igual;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 68 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return igual;}
+#line 67 "lexicon.l"
+{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 69 "lexicon.l"
-{columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return menos;}
-	YY_BREAK
-case 30:
-YY_RULE_SETUP
-#line 70 "lexicon.l"
+#line 68 "lexicon.l"
 {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return pcomillas;}
 	YY_BREAK
-case 31:
-/* rule 31 can match eol */
+case 30:
+/* rule 30 can match eol */
 YY_RULE_SETUP
-#line 72 "lexicon.l"
+#line 70 "lexicon.l"
 {linea++; columna=0; anterior=0;}
+	YY_BREAK
+case 31:
+YY_RULE_SETUP
+#line 71 "lexicon.l"
+{ columna++; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 73 "lexicon.l"
-{ columna++; }
-	YY_BREAK
-case 33:
-YY_RULE_SETUP
-#line 75 "lexicon.l"
 {
 
 std::cout<<"Error Lexico: "<<linea<<"\n";
 //printf("Error lexico en linea %d",linea);
 }
 	YY_BREAK
-case 34:
+case 33:
 YY_RULE_SETUP
-#line 80 "lexicon.l"
+#line 78 "lexicon.l"
 ECHO;
 	YY_BREAK
-#line 1118 "scanner.cpp"
+#line 1113 "scanner.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COM):
 	yyterminate();
@@ -2091,4 +2086,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 80 "lexicon.l"
+#line 78 "lexicon.l"

@@ -25,6 +25,20 @@ typedef struct {
     partition mbr_partitions[4];
 }mbr;
 
+typedef struct {
+    string id;
+    int status;
+    string path;
+    partition part;
+    string name;
+}mounted;
+
+typedef struct {
+    string letter;
+    string path;
+    mounted partitions[90];
+}mountedDisks;
+
 class disk {
 public:
     disk();

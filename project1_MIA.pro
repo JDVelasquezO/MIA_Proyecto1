@@ -18,7 +18,9 @@ SOURCES += main.cpp \
     methods.cpp \
     objfdisk.cpp \
     node.cpp \
-    linkedlist.cpp
+    linkedlist.cpp \
+    objmount.cpp \
+    staticobjects.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -44,4 +46,6 @@ HEADERS += \
     methods.h \
     objfdisk.h \
     node.h \
-    linkedlist.h
+    linkedlist.h \
+    objmount.h \
+    staticobjects.h

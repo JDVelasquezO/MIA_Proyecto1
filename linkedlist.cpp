@@ -2,6 +2,7 @@
 #include "linkedlist.h"
 #include "node.h"
 #include "iostream"
+#include "disk.h"
 using namespace std;
 
 LinkedList::LinkedList()
@@ -12,6 +13,13 @@ LinkedList::LinkedList()
 
 void LinkedList::addStart(char value) {
     Node *node = new Node(value);
+    node->next = this->start;
+    this->start = node;
+    this->length += 1;
+}
+
+void LinkedList::addPartitions(mountedDisks disk) {
+    Node *node = new Node(disk);
     node->next = this->start;
     this->start = node;
     this->length += 1;

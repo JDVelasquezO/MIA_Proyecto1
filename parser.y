@@ -7,6 +7,7 @@
 #include "objmkdisk.h"
 #include "objrmdisk.h"
 #include "objfdisk.h"
+#include "objmount.h"
 using namespace std;
 
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -31,6 +32,7 @@ int yyerror(const char* mens) {
     class ObjMkdisk *mkdisk;
     class objrmdisk *rmdisk;
     class ObjFdisk *fdisk;
+    class objMount *mount;
 }
 
 // TERMINALES TIPO TEXT
@@ -70,6 +72,7 @@ int yyerror(const char* mens) {
 %type<mkdisk> COMMAND_MKDISK;
 %type<rmdisk> COMMAND_RMDISK;
 %type<fdisk> COMMAND_FDISK;
+%type<mount> COMMAND_MOUNT;
 %start INICIO
 %%
 
@@ -83,6 +86,9 @@ LEXPA: COMMAND_MKDISK {
             $1->executeCommand($1);
         }
       | COMMAND_FDISK {
+            $1->executeCommand($1);
+        }
+      | COMMAND_MOUNT {
             $1->executeCommand($1);
         }
 ;
@@ -162,7 +168,7 @@ COMMAND_FDISK: pfdisk{
                     $1->type = var_type;
                     $$ = $1;
               }
-            | COMMAND_FDISK menos punit igual unityFd {
+            | COMMAND_FDISK menos punit igual unity {
 
                     string var_unity = $5;
                     $1->unity = var_unity;
@@ -210,6 +216,35 @@ COMMAND_FDISK: pfdisk{
               }
 ;
 
+COMMAND_MOUNT: pmount {
+                objMount *disk = new objMount();
+                $$ = disk;
+            }
+            | COMMAND_MOUNT menos ppath igual cadena {
 
+                string var_path = $5;
+                var_path.erase(0, 1);
+                var_path.erase(var_path.size()-1, 1);
+                $1->path = var_path;
+                $$ = $1;
+            }
+            | COMMAND_MOUNT menos ppath igual ruta {
 
+                    string var_path = $5;
+                    $1->path = var_path;
+                    $$ = $1;
+            }
+            | COMMAND_MOUNT menos pname igual identificador {
+
+                    string var_name = $5;
+                    $1->name = var_name;
+                    $$ = $1;
+             }
+            | COMMAND_MOUNT menos pname igual cadena {
+
+                    string var_name = $5;
+                    $1->name = var_name;
+                    $$ = $1;
+              }
+;
 

@@ -221,6 +221,7 @@ void deletePartition(ObjFdisk *disk) {
     fseek(file, 0, SEEK_SET); // Moverse 0 caracteres desde el inicio del archivo
     mbr tempMbr;
     fread(&tempMbr, sizeof(mbr), 1, file);
+    int sizeEmpty = 0;
 
     for (int i = 0; i < 4; i++) {
         if (tempMbr.mbr_partitions[i].part_name == disk->name) {
@@ -228,10 +229,26 @@ void deletePartition(ObjFdisk *disk) {
             firstPartition.part_status = '0';
             firstPartition.part_type = '-';
             firstPartition.part_fit = 'W';
+            sizeEmpty = firstPartition.part_size;
             firstPartition.part_size = 0;
             firstPartition.part_start = 0;
             firstPartition.part_name[0] = '\0';
+
             tempMbr.mbr_partitions[i] = firstPartition;
+            tempMbr.availableStorage -= sizeEmpty;
+
+            if (disk->del == "full") {
+
+                char buffer[1024];
+                for (int i = 0; i < sizeEmpty; i++) { // Es hasta 1024 porque es 1KB
+                    buffer[i] = '\0'; // Se llena la variable con el caracter 0. 1 char = 1 byte
+                }
+
+                for (int i = 0; i < sizeEmpty; i++) { // Desde 0 hasta el el tamaño
+                    fwrite(&buffer, 1024, 1, file); // Escribe i veces el kilobyte
+                }
+            }
+
             break;
         } else {
             cout << "No se encontro una particion con ese nombre" << endl;
@@ -245,11 +262,12 @@ void ObjFdisk::executeCommand(ObjFdisk *disk) {
     string path = createFolder(disk);
     if (Methods::isDirExist(path)) {
 
-        if (disk->del == "fast" || disk->del == "full") {
+        /*if (disk->del == "fast" || disk->del == "full") {
             deletePartition(disk);
         } else {
             createPartition(disk);
-        }
+        }*/
+        createPartition(disk);
     } else {
         cout << "La ruta no existe";
     }
